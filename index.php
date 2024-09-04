@@ -43,3 +43,5 @@ mysqli_stmt_bind_param($stmt, "ssii",
 mysqli_stmt_execute($stmt);
 
 echo "Record saved.";
+
+?>
