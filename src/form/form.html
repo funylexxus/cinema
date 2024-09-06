@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contact</title>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="/cinema/css/main.css" />
+  </head>
+
+  <body>
+    <h1>Form</h1>
+
+    <main>
+      <form action="src/form/process-form.php" method="post">
+        <label for="title">Title</label>
+        <input id="title" type="text" name="title" placeholder="Title..." />
+
+        <label for="description">Description</label>
+        <input
+          id="description"
+          type="text"
+          name="description"
+          placeholder="Description..." />
+
+        <label for="release_date">Release date</label>
+        <input
+          id="release_date"
+          type="text"
+          name="release_date"
+          placeholder="Release date..." />
+
+        <label for="duration">Duration</label>
+        <input
+          id="duration"
+          type="text"
+          name="duration"
+          placeholder="Duration..." />
+
+        <label for="rating">Rating</label>
+        <input id="rating" type="text" name="rating" placeholder="Rating..." />
+
+        <button type="submit">Submit</button>
+      </form>
+    </main>
+  </body>
+</html>
