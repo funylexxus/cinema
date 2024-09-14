@@ -38,5 +38,5 @@ $rating);
 
 mysqli_stmt_execute($stmt);
 
-echo "Chlen bol'she ne vstanet"; //????? WHAT IS THIS?
+header("Location: \\cinema/index.html");
 ?>
