@@ -16,27 +16,22 @@
       <div class="signup">
         <form action="process-authorization.php" method="post">
           <label for="chk" aria-hidden="true">Sign up</label>
-          <input type="txt" name="login" placeholder="Username" required="" />
-          <input type="email" name="email" placeholder="Email" required="" />
-          <input
-            type="password"
-            name="pswd"
-            placeholder="Password"
-            required="" />
-            <input type="hidden" name="action" value="signup" />
-          <button>Sign up</button>
+          <input type="text" name="login" placeholder="Username" />
+          <input type="email" name="email" placeholder="Email" />
+          <input type="password" name="pswd" placeholder="Password" />
+          <input type="hidden" name="action" value="signup" />
+          <button type="submit">Sign up</button>
         </form>
       </div>
-
       <div class="login">
         <form action="process-authorization.php" method="post">
           <label for="chk" aria-hidden="true">Login</label>
-          <input type="email" name="email" placeholder="Email" required="" />
+          <input type="email" name="email" placeholder="Email" />
           <input
             type="password"
             name="pswd"
             placeholder="Password"
-            required="" />
+             />
             <input type="hidden" name="action" value="login" />
           <button>Login</button>
         </form>
