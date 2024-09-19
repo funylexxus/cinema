@@ -1,14 +1,7 @@
 <?php
-$servername = "localhost";
-$username = "root"; 
-$password = ""; 
-$dbname = "cinema_db"; 
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require "authorizationQueries.php";
+require "authorizationValidation.php";
 //
 //sign up
 //
@@ -17,18 +10,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     $password = password_hash($_POST['pswd'], PASSWORD_BCRYPT);
     $email = $_POST['email'];
 
+    $result = setUser($login, $password, $email);
 
-    $sql = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $login, $password, $email);
+    header("Location: \\cinema/index.html");
 
-    if ($stmt->execute()) {
-        header("Location: \\cinema/index.html");
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-
-    $stmt->close();
 }
 //
 //sign in
@@ -37,21 +22,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     $email = $_POST['email'];
     $password = $_POST['pswd'];
 
-    $sql = "SELECT password FROM users WHERE email = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($hashed_password);
-    $stmt->fetch();
+    $id = getIdByEmail($email);
+    $hashedPassword = getPassword($id);
 
-    if ($stmt->num_rows > 0 && password_verify($password, $hashed_password)) {
+    if (password_verify($password, $hashedPassword)) {
         header("Location: \\cinema/index.html");
     } else {
         echo "Invalid email or password";
     }
-
-    $stmt->close();
 }
-
-$conn->close();

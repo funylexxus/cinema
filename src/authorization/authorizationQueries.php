@@ -1,6 +1,6 @@
 <?php
 
-require "constants.php";
+require "../../constants.php";
 
 function connectToDatabase(){
     $conn = new mysqli(SERVERNAME, USERNAME, PASSWORD, DBNAME);
@@ -14,6 +14,69 @@ function connectToDatabase(){
 
 function disconnectFromDatabase($conn){
     $conn->close();
+}
+
+function setUser(String $login, String $password, String $email){
+    $connection = connectToDatabase();
+
+    $sql = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("sss", $login, $password, $email);
+
+    $stmt->execute();
+    $stmt->close();
+
+    disconnectFromDatabase($connection);
+}
+
+function getIdByEmail(String $email){
+    $id = null;
+
+    $connection = connectToDatabase();
+
+    $sql = "SELECT id FROM users WHERE email = ? LIMIT 1";
+
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $id = $row["id"];
+    }
+
+    $stmt->close();
+
+    disconnectFromDatabase($connection);
+
+    return $id;
+}
+
+function getIdByUsername(String $username){
+    $id = null;
+
+    $connection = connectToDatabase();
+
+    $sql = "SELECT id FROM users WHERE login = ? LIMIT 1";
+
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $id = $row["id"];
+    }
+
+    $stmt->close();
+
+    disconnectFromDatabase($connection);
+
+    return $id;
 }
 
 function getUsername(int $id){
@@ -34,23 +97,24 @@ function getUsername(int $id){
         $username = $row["login"];
     }
 
+    $stmt->close();
+
     disconnectFromDatabase($connection);
 
     return $username;
 }
 
-function setUsername(int $id, string $newUsername): bool {
+function setUsername(int $id, string $newUsername) {
     $connection = connectToDatabase();
 
     $sql = "UPDATE users SET login = ? WHERE id = ?";
-
     $stmt = $connection->prepare($sql);
     $stmt->bind_param("si", $newUsername, $id);
-    $result = $stmt->execute();
+
+    $stmt->execute();
+    $stmt->close();
 
     disconnectFromDatabase($connection);
-
-    return $result;
 }
 
 function getEmail(int $id){
@@ -71,6 +135,8 @@ function getEmail(int $id){
         $email = $row["email"];
     }
 
+    $stmt->close();
+
     disconnectFromDatabase($connection);
 
     return $email;
@@ -80,10 +146,11 @@ function setEmail(int $id, string $newEmail): bool {
     $connection = connectToDatabase();
 
     $sql = "UPDATE users SET email = ? WHERE id = ?";
-
     $stmt = $connection->prepare($sql);
     $stmt->bind_param("si", $newEmail, $id);
+
     $result = $stmt->execute();
+    $stmt->close();
 
     disconnectFromDatabase($connection);
 
@@ -108,6 +175,8 @@ function getPassword(int $id){
         $password = $row["password"];
     }
 
+    $stmt->close();
+
     disconnectFromDatabase($connection);
 
     return $password;
@@ -117,10 +186,11 @@ function setPassword(int $id, string $newPassword): bool {
     $connection = connectToDatabase();
 
     $sql = "UPDATE users SET password = ? WHERE id = ?";
-
     $stmt = $connection->prepare($sql);
     $stmt->bind_param("si", $newPassword, $id);
+
     $result = $stmt->execute();
+    $stmt->close();
 
     disconnectFromDatabase($connection);
 
