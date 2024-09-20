@@ -1,5 +1,7 @@
 <?php
 
+require "../../constants.php";
+
 function validateRegistration($username, $email, $password){
     if(($result = validateUsername($username)) != false) return $result;
     if(($result = validateEmail($email)) != false) return $result;
@@ -16,7 +18,7 @@ function validateAuthorization($email, $password){
 }
 
 function validateUsername($username){
-    if(($result = checkLength($username, 3, 20)) != false) return "Логин ".$result;
+    if(($result = checkLength($username, MIN_LOGIN_LENGTH, MAX_LOGIN_LENGTH)) != false) return "Логин ".$result;
 
     if(($result = checkLoginSymbols($username)) != false) return "Логин ".$result;
     
@@ -32,7 +34,7 @@ function validateEmail($email){
 }
 
 function validatePassword($password){
-    if(($result = checkMinLength($password, 6)) != false) return "Пароль ".$result;
+    if(($result = checkMinLength($password, MIN_PASSWORD_LENGTH)) != false) return "Пароль ".$result;
     
     if(($result = checkPasswordSymbols($password)) != false) return "Пароль ".$result;
     
