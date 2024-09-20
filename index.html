@@ -70,7 +70,6 @@
     <div class="content">
       <div class="container">
         <h2 class="mb-5">Movies Table</h2>
-
         <div class="table-responsive">
           <table class="table custom-table">
             <thead>
@@ -89,6 +88,7 @@
               </tr>
             </thead>
             <tbody>
+              {{#movies}}
               <tr>
                 <th scope="row">
                   <label class="control control--checkbox">
@@ -96,27 +96,18 @@
                     <div class="control__indicator"></div>
                   </label>
                 </th>
-                <td>1392</td>
-                <td>James Yates</td>
-                <td>Web Designer</td>
-                <td>+63 983 0962 971</td>
-                <td>NY University</td>
+                <td>{{id}}</td>
+                <td>{{title}}</td>
+                <td>{{release_date}}</td>
+                <td>{{duration}}</td>
+                <td>{{rating}}</td>
               </tr>
-              <tr>
-                <th scope="row">
-                  <label class="control control--checkbox">
-                    <input type="checkbox" />
-                    <div class="control__indicator"></div>
-                  </label>
-                </th>
-                <td>4616</td>
-                <td>Matthew Wasil</td>
-                <td>Graphic Designer</td>
-                <td>+02 020 3994 929</td>
-                <td>London College</td>
-              </tr>
-              <tr>
-                <th scope="row">
+              {{/movies}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+                <!-- <th scope="row">
                   <label class="control control--checkbox">
                     <input type="checkbox" />
                     <div class="control__indicator"></div>
@@ -140,11 +131,11 @@
                 <td>Illustrator</td>
                 <td>+92 020 3994 929</td>
                 <td>College</td>
-              </tr>
-            </tbody>
+              </tr> -->
+            <!-- </tbody>
           </table>
-        </div>
-      </div>
+        </div> -->
+      </div> 
 
       <div class="container">
         <h2 class="mb-5">Sessions Table</h2>
