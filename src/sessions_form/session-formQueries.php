@@ -3,12 +3,12 @@
 require_once "./constants.php";
 require_once "./databaseConnection.php";
 
-function setMovie($title, $description, $release_date, $duration, $rating){
+function setSession($movie_id, $hall_number, $start_time, $price){
     $connection = connectToDatabase();
 
-    $sql = "INSERT INTO movies (title, description, release_date, duration, rating) VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO sessions (movie_id, hall_number, start_time, price) VALUES (?, ?, ?, ?)";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param("sssdd", $title, $description, $release_date, $duration, $rating);
+    $stmt->bind_param("iisd", $movie_id, $hall_number, $start_time, $price);
 
     $stmt->execute();
     $stmt->close();
@@ -16,12 +16,12 @@ function setMovie($title, $description, $release_date, $duration, $rating){
     disconnectFromDatabase($connection);
 }
 
-function getMovies(){
+function getSessions(){
     $connection = connectToDatabase();
 
-    $moviesArray = [];
+    $sessionsArray = [];
 
-    $sql = "SELECT id, title, description, release_date, duration, rating FROM movies";
+    $sql = "SELECT id, movie_id, hall_number, start_time, price FROM sessions";
     $stmt = $connection->prepare($sql);
 
     $stmt->execute();
@@ -29,7 +29,7 @@ function getMovies(){
 
     if($result->num_rows > 0){
         while($row = $result->fetch_assoc()){
-            $moviesArray[] = $row;
+            $sessionsArray[] = $row;
         }
     }
 
@@ -37,5 +37,5 @@ function getMovies(){
 
     disconnectFromDatabase($connection);
 
-    return $moviesArray;
+    return $sessionsArray;
 }
