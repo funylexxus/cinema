@@ -1,9 +1,7 @@
 <?php
-error_reporting(E_ALL & ~E_WARNING);
-include_once "./constants.php";
-include_once "./databaseConnection.php";
-include_once "../../constants.php";
-include_once "../../databaseConnection.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/databaseConnection.php";
+
 
 function setSession($movie_id, $hall_number, $start_time, $price){
     $connection = connectToDatabase();
