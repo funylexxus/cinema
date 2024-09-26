@@ -1,6 +1,6 @@
 <?php
 
-require "../../constants.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
 
 function validateRegistration($username, $email, $password){
     if(($result = validateUsername($username)) != false) return $result;
