@@ -13,6 +13,6 @@ if(($result = validateMovie($title, $description, $release_date, $duration, $rat
     echo "<p style='color: red;'>".nl2br($result)."</p>";
 } else {
     setMovie($title, $description, $release_date, $duration, $rating);
-    header("Location: \\cinema/index.html");
+    header("Location: \\cinema/index.php");
     exit();
 }

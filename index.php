@@ -1,3 +1,8 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/cinema/config_session.php'; //where needed start_session();
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -29,7 +34,7 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="/cinema/index.html"
+            <a class="nav-link" href="/cinema/index.php"
               >Home <span class="sr-only">(current)</span></a
             >
           </li>

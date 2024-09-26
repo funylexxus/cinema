@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         echo "<p style='color: red;'>Ошибка: $result</p>";
     } else {
         setUser($login, password_hash($password, PASSWORD_BCRYPT), $email);
-        header("Location: \\cinema/index.html");
+        header("Location: \\cinema/index.php");
         exit();
     }
 }
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         echo "<p style='color: red;'>Ошибка: $result</p>";
     } else {
         if (password_verify($password, $hashedPassword)) {
-            header("Location: \\cinema/index.html");
+            header("Location: \\cinema/index.php");
             exit();
         } else {
             echo "<p style='color: red;'>Неверный пароль</p>";
