@@ -1,7 +1,7 @@
 <?php
 
-require "../../constants.php";
-require "../../databaseConnection.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/databaseConnection.php";
 
 
 function setUser(String $login, String $password, String $email){

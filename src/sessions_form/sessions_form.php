@@ -60,12 +60,12 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a
                 class="dropdown-item"
-                href="/cinema/src/movies_form/movies_form.html"
+                href="/cinema/src/movies_form/movies_form.php"
                 >Movies form</a
               >
               <a
                 class="dropdown-item"
-                href="/cinema/src/sessions_form/sessions_form.html"
+                href="/cinema/src/sessions_form/sessions_form.php"
                 >Sessions form</a
               >
             </div>
@@ -75,15 +75,35 @@
     </nav>
 
     <h1>Sessions Form</h1>
-
     <main>
-      <form action="process-sessions_form.php" method="post">
+      <form action="sessions_form.php" method="post">
+
         <label for="movie_id">Movie ID</label>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Select movie title
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+          <?php
+            require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/movies_form/movies-formQueries.php";
+            $moviesTitleArray = getMoviesTitle();
+            // $movie_id = getMoviesIdByTitle($title);
+            // echo $movie_id;
+          ?>
+
+          <?php foreach ($moviesTitleArray as $row): ?>
+            <button class="dropdown-item" type="submit"><?php echo htmlspecialchars($row['title']); ?></button>
+          <?php endforeach; ?> 
+
+          </div>
+        </div>
         <input
           id="movie_id"
           type="text"
           name="movie_id"
-          placeholder="Movie Id..." />
+          placeholder="Movie Id..." 
+          disabled/>
 
         <label for="hall_number">Hall number</label>
         <input
@@ -120,3 +140,20 @@
       crossorigin="anonymous"></script>
   </body>
 </html>
+
+<?php
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formQueries.php";
+
+$movie_id = $_POST['movie_id'];
+$hall_number = $_POST['hall_number'];
+$start_time = $_POST['start_time'];
+$price = $_POST['price'];
+
+if(isset($_POST['movie_id'])) {
+  setSession($movie_id, $hall_number, $start_time, $price);
+  header("Location: \\cinema/index.php");
+  exit();
+}
+
+?>

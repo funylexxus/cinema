@@ -60,10 +60,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a
                 class="dropdown-item"
-                href="/cinema/src/movies_form/movies_form.html"
+                href="/cinema/src/movies_form/movies_form.php"
                 >Movies form</a
               >
-              <a class="dropdown-item" href="/cinema/src/sessions_form/sessions_form.html">Sessions form</a>
+              <a class="dropdown-item" href="/cinema/src/sessions_form/sessions_form.php">Sessions form</a>
             </div>
           </li>
         </ul>
@@ -85,40 +85,41 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
         <h2 class="mb-5">Movies Table</h2>
 
         <div class="table-responsive">
-        <table class="table custom-table">
-    <thead>
-        <tr>
-            <th scope="col">
-                <label class="control control--checkbox">
-                    <input type="checkbox" class="js-check-all" />
-                    <div class="control__indicator"></div>
-                </label>
-            </th>
-            <th scope="col">id</th>
-            <th scope="col">Title</th>
-            <th scope="col">Release date</th>
-            <th scope="col">Duration</th>
-            <th scope="col">Rating</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($moviesArray as $row): ?>
-            <tr>
-                <th scope="row">
-                    <label class="control control--checkbox">
-                        <input type="checkbox" />
-                        <div class="control__indicator"></div>
-                    </label>
-                </th>
-                <td><?php echo $row['id']; ?></td>
-                <td><?php echo htmlspecialchars($row['title']); ?></td>
-                <td><?php echo htmlspecialchars($row['release_date']); ?></td>
-                <td><?php echo htmlspecialchars($row['duration']); ?></td>
-                <td><?php echo htmlspecialchars($row['rating']); ?></td>
-            </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+          <table class="table custom-table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        <label class="control control--checkbox">
+                            <input type="checkbox" class="js-check-all" />
+                            <div class="control__indicator"></div>
+                        </label>
+                    </th>
+                    <th scope="col">id</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Release date</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">Rating</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php foreach ($moviesArray as $row): ?>
+                    <tr>
+                        <th scope="row">
+                            <label class="control control--checkbox">
+                                <input type="checkbox" />
+                                <div class="control__indicator"></div>
+                            </label>
+                        </th>
+                        <td><?php echo $row['id']; ?></td>
+                        <td><?php echo htmlspecialchars($row['title']); ?></td>
+                        <td><?php echo htmlspecialchars($row['release_date']); ?></td>
+                        <td><?php echo htmlspecialchars($row['duration']); ?></td>
+                        <td><?php echo htmlspecialchars($row['rating']); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+          </table>
         </div>
       </div>
 
