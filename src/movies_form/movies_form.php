@@ -43,7 +43,7 @@
           <li class="nav-item">
             <a
               class="nav-link"
-              href="/cinema/src/authorization/authorization-page.html"
+              href="/cinema/src/authorization/authorization-page.php"
               >Authorization</a
             >
           </li>
