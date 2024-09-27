@@ -34,7 +34,7 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="/cinema/index.html"
+            <a class="nav-link" href="/cinema/index.php"
               >Home <span class="sr-only">(current)</span></a
             >
           </li>
@@ -42,7 +42,7 @@
           <li class="nav-item">
             <a
               class="nav-link"
-              href="/cinema/src/authorization/authorization-page.html"
+              href="/cinema/src/authorization/authorization-page.php"
               >Authorization</a
             >
           </li>
@@ -60,12 +60,12 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a
                 class="dropdown-item"
-                href="/cinema/src/movies_form/movies_form.html"
+                href="/cinema/src/movies_form/movies_form.php"
                 >Movies form</a
               >
               <a
                 class="dropdown-item"
-                href="/cinema/src/sessions_form/sessions_form.html"
+                href="/cinema/src/sessions_form/sessions_form.php"
                 >Sessions form</a
               >
             </div>
@@ -75,15 +75,46 @@
     </nav>
 
     <h1>Sessions Form</h1>
-
     <main>
-      <form action="process-sessions_form.php" method="post">
+      <form action="sessions_form.php" method="post">
+
         <label for="movie_id">Movie ID</label>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Select movie title
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+          <?php
+            require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/movies_form/movies-formQueries.php";
+            $moviesArray = getMovies();
+
+            $selectedMovieId = '';
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+              $selectedMovieId = $_POST['movie_id'] ?? '';
+            }   
+          ?>
+
+          <?php foreach ($moviesArray as $row): ?>
+            <button class="dropdown-item" type="submit" value="<?php echo htmlspecialchars($row['id']); ?>">
+          <?php echo htmlspecialchars($row['title']); ?>
+            </button>
+          <?php endforeach; ?> 
+
+          <?php if ($selectedMovieId): ?>
+        <div>
+            <p>Selected Movie ID: <?php echo htmlspecialchars($selectedMovieId); ?></p>
+        </div>
+    <?php endif; ?>
+
+          </div>
+        </div>
         <input
           id="movie_id"
           type="text"
           name="movie_id"
-          placeholder="Movie Id..." />
+          placeholder="Movie Id..." 
+          readonly/>
 
         <label for="hall_number">Hall number</label>
         <input
@@ -120,3 +151,25 @@
       crossorigin="anonymous"></script>
   </body>
 </html>
+
+<?php
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formQueries.php";
+
+//$title = $_GET['title'];
+$movie_id = $_POST['movie_id'];
+$hall_number = $_POST['hall_number'];
+$start_time = $_POST['start_time'];
+$price = $_POST['price'];
+
+if(isset($_POST['movie_id']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+  setSession($movie_id, $hall_number, $start_time, $price);
+  header("Location: \\cinema/index.php");
+  exit();
+}
+
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+  echo $movie_id;
+}
+
+?>

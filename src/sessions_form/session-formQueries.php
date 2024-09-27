@@ -39,3 +39,4 @@ function getSessions(){
 
     return $sessionsArray;
 }
+

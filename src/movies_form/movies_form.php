@@ -13,6 +13,7 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
       rel="stylesheet" />
+      <link rel ="stylesheet" href ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">  
     <link rel="stylesheet" href="/cinema/css/main.css" />
     <title>Movies Form</title>
   </head>
@@ -42,7 +43,7 @@
           <li class="nav-item">
             <a
               class="nav-link"
-              href="/cinema/src/authorization/authorization-page.html"
+              href="/cinema/src/authorization/authorization-page.php"
               >Authorization</a
             >
           </li>
@@ -60,12 +61,12 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a
                 class="dropdown-item"
-                href="/cinema/src/movies_form/movies_form.html"
+                href="/cinema/src/movies_form/movies_form.php"
                 >Movies form</a
               >
               <a
                 class="dropdown-item"
-                href="/cinema/src/sessions_form/sessions_form.html"
+                href="/cinema/src/sessions_form/sessions_form.php"
                 >Sessions form</a
               >
             </div>
@@ -77,7 +78,7 @@
     <h1>Movies Form</h1>
 
     <main>
-      <form action="process-movies_form.php" method="post">
+      <form action="movies_form.php" method="post">
         <label for="title">Title</label>
         <input id="title" type="text" name="title" placeholder="Title..." />
 
@@ -89,11 +90,12 @@
           placeholder="Description..." />
 
         <label for="release_date">Release date</label>
-        <input
+        <input type="date" id="release-date" name="release_date" class="calendar-input" placeholder="Release date..." max="2026-12-31"/>
+        <!-- <input
           id="release_date"
           type="text"
           name="release_date"
-          placeholder="Release date..." />
+          placeholder="Release date..." /> -->
 
         <label for="duration">Duration</label>
         <input
@@ -121,5 +123,30 @@
       src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"></script>
+      <script src ="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>  
+      <script src="/src/js/scripts.js"></script>
   </body>
 </html>
+
+<?php
+
+require "movies-formQueries.php";
+require "movies-formValidation.php";
+
+$title = $_POST["title"];
+$description = $_POST["description"];
+$release_date = $_POST["release_date"];
+$duration = filter_input(INPUT_POST, "duration", FILTER_SANITIZE_NUMBER_INT);
+$rating = filter_input(INPUT_POST, "rating", FILTER_SANITIZE_NUMBER_INT);
+
+if(isset($_POST['title'])) {
+  if(($result = validateMovie($title, $description, $release_date, $duration, $rating)) != false) {
+    echo "<p style='color: red;'>".nl2br($result)."</p>";
+  } else {
+    setMovie($title, $description, $release_date, $duration, $rating);
+    header("Location: ../../index.php"); 
+    exit();
+  }
+}
+
+?>
