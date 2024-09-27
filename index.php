@@ -1,4 +1,8 @@
 <?php
+  require_once $_SERVER["DOCUMENT_ROOT"]."/cinema/src/authorization/checkAuthorization.php";
+
+  if(checkAuthorization() != false) header("Location: /cinema/src/authorization/authorization-page.html");
+
 require_once $_SERVER['DOCUMENT_ROOT'] . '/cinema/config_session.php'; //where needed start_session();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
 ?>

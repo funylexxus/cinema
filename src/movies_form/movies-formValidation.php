@@ -1,6 +1,6 @@
 <?php
 
-require_once "../../constants.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
 
 function validateMovie($title, $description, $release_date, $duration, $rating){
     if(($result = validateTitle($title)) != false) return $result;
