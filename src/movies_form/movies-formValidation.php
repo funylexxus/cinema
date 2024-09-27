@@ -57,9 +57,9 @@ function validateReleaseDate($release_date) {
         return "Дата не должна быть пустой.(goida)";
     }
 
-    $date = DateTime::createFromFormat('D-m-y', $release_date);
-    if (!$date || $date->format('D-m-y') !== $release_date) {
-        return "Неправильный формат данных. Используйте DD-MM-YYYY.(dr gitlera)";
+    $date = DateTime::createFromFormat('Y-m-d', $release_date);
+    if (!$date || $date->format('Y-m-d') !== $release_date) {
+        return "Неправильный формат данных. Используйте YYYY-MM-DD.(dr gitlera)";
     }
     return false;
 }

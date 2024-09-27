@@ -90,7 +90,7 @@
           placeholder="Description..." />
 
         <label for="release_date">Release date</label>
-        <input type="date" id="release-date" class="calendar-input" placeholder="Release date..."/>
+        <input type="date" id="release-date" name="release_date" class="calendar-input" placeholder="Release date..." max="2026-12-31"/>
         <!-- <input
           id="release_date"
           type="text"

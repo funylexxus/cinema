@@ -87,14 +87,25 @@
 
           <?php
             require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/movies_form/movies-formQueries.php";
-            $moviesTitleArray = getMoviesTitle();
-            // $movie_id = getMoviesIdByTitle($title);
-            // echo $movie_id;
+            $moviesArray = getMovies();
+
+            $selectedMovieId = '';
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+              $selectedMovieId = $_POST['movie_id'] ?? '';
+            }   
           ?>
 
-          <?php foreach ($moviesTitleArray as $row): ?>
-            <button class="dropdown-item" type="submit"><?php echo htmlspecialchars($row['title']); ?></button>
+          <?php foreach ($moviesArray as $row): ?>
+            <button class="dropdown-item" type="submit" value="<?php echo htmlspecialchars($row['id']); ?>">
+          <?php echo htmlspecialchars($row['title']); ?>
+            </button>
           <?php endforeach; ?> 
+
+          <?php if ($selectedMovieId): ?>
+        <div>
+            <p>Selected Movie ID: <?php echo htmlspecialchars($selectedMovieId); ?></p>
+        </div>
+    <?php endif; ?>
 
           </div>
         </div>
@@ -103,7 +114,7 @@
           type="text"
           name="movie_id"
           placeholder="Movie Id..." 
-          disabled/>
+          readonly/>
 
         <label for="hall_number">Hall number</label>
         <input
@@ -145,15 +156,20 @@
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formQueries.php";
 
+//$title = $_GET['title'];
 $movie_id = $_POST['movie_id'];
 $hall_number = $_POST['hall_number'];
 $start_time = $_POST['start_time'];
 $price = $_POST['price'];
 
-if(isset($_POST['movie_id'])) {
+if(isset($_POST['movie_id']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
   setSession($movie_id, $hall_number, $start_time, $price);
   header("Location: \\cinema/index.php");
   exit();
+}
+
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+  echo $movie_id;
 }
 
 ?>
