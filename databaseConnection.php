@@ -1,12 +1,11 @@
 <?php
 function connectToDatabase(){
-    $conn = new mysqli(SERVERNAME, USERNAME, PASSWORD, DBNAME);
-
-    if ($conn->connect_error) {
-        die("Ошибка при подключении к БД: " . $conn->connect_error);
+    try{
+        $conn = new mysqli(SERVERNAME, USERNAME, PASSWORD, DBNAME);
+        return $conn;
+    } catch(Exception $e){
+        die("Error: ".$e->getMessage());
     }
-    
-    return $conn;
 }
 
 function disconnectFromDatabase($conn){
