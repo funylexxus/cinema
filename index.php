@@ -1,10 +1,9 @@
 <?php
   require_once $_SERVER["DOCUMENT_ROOT"]."/cinema/src/authorization/checkAuthorization.php";
+  require_once $_SERVER['DOCUMENT_ROOT'] . '/cinema/config_session.php'; //where needed start_session();
+  require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
 
-  if(checkAuthorization() != false) header("Location: /cinema/src/authorization/authorization-page.html");
-
-require_once $_SERVER['DOCUMENT_ROOT'] . '/cinema/config_session.php'; //where needed start_session();
-require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
+  if(checkAuthorization() != false) header("Location: /cinema/src/authorization/authorization-page.php");
 ?>
 
 <!DOCTYPE html>
@@ -80,6 +79,37 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
 
       $sessionsArray = getSessions();
       $moviesArray = getMovies();
+
+      if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['filterSessions'])) {
+            $hall_number = $_POST['Hall_number'];
+            $price = $_POST['Price'];
+    
+            // Фильтрация массива
+            $sessionsArray = array_filter($sessionsArray, function($session) use ($hall_number, $price) {
+                $matchHall = empty($hall_number) || $session['hall_number'] == $hall_number;
+                $matchPrice = empty($price) || $session['price'] == $price;
+                return $matchHall && $matchPrice;
+            });
+        } elseif (isset($_POST['resetSessions'])) {
+            // Сброс фильтров
+            $sessionsArray = getSessions();
+        }
+
+      if (isset($_POST['filterMovies'])) {
+        $title = $_POST['Title'] ?? '';
+        $rating = $_POST['Rating'] ?? '';
+  
+        $moviesArray = array_filter($moviesArray, function($movie) use ($title, $rating) {
+          $matchTitle = empty($title) || stripos($movie['title'], $title) !== false;
+          $matchRating = empty($rating) || $movie['rating'] === $rating;
+          return $matchTitle && $matchRating;
+          });
+      } elseif (isset($_POST['resetMovies'])) {
+        $moviesArray = getMovies();
+      }
+    }
+
     ?>
 
     <h1>Tables</h1>
@@ -87,6 +117,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
     <div class="content">
       <div class="container">
         <h2 class="mb-5">Movies Table</h2>
+
+          <form method="post">
+            <input type="text" name="Title" placeholder="Title" value="<?php echo isset($_POST['Title']) ? htmlspecialchars($_POST['Title']) : ''; ?>">
+            <input type="text" name="Rating" placeholder="Rating" value="<?php echo isset($_POST['Rating']) ? htmlspecialchars($_POST['Rating']) : ''; ?>">
+            <button type="submit" name="filterMovies">Фильтровать</button>
+            <button type="submit" name="resetMovies">Сбросить фильтры</button>
+          </form>
 
         <div class="table-responsive">
           <table class="table custom-table">
@@ -129,6 +166,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
 
       <div class="container">
         <h2 class="mb-5">Sessions Table</h2>
+
+        <form method="post">
+          <input type="text" name="Hall_number" placeholder="Hall number" value="<?php echo isset($_POST['Hall_number']) ? htmlspecialchars($_POST['Hall_number']) : ''; ?>">
+          <input type="text" name="Price" placeholder="Price" value="<?php echo isset($_POST['Price']) ? htmlspecialchars($_POST['Price']) : ''; ?>">
+          <button type="submit" name="filterSessions">Фильтровать</button>
+          <button type="submit" name="resetSessions">Сбросить фильтры</button>
+        </form>
 
         <div class="table-responsive">
           <table class="table custom-table">

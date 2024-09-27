@@ -44,6 +44,7 @@ error_reporting(E_ALL);
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
 require_once $_SERVER['DOCUMENT_ROOT'] ."//cinema/src/authorization/authorizationQueries.php";
 require_once $_SERVER['DOCUMENT_ROOT'] ."//cinema/src/authorization/authorizationValidation.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/cinema/config_session.php';
 
 //
 //sign up
@@ -58,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         } else {
         setUser($login, password_hash($password, PASSWORD_BCRYPT), $email);
         $_SESSION['loggedin'] = true;
-        header("Location: \\cinema/index.php");
+        header("Location: /cinema/index.php");
         exit();
     }
 }
@@ -79,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     } else {
         if (password_verify($password, $hashedPassword)) {
         $_SESSION['loggedin'] = true;
-        header("Location: \\cinema/index.php");
+        header("Location: /cinema/index.php");
         exit();
         } else {
             echo "<p style='color: red;'>Неверный пароль</p>";
