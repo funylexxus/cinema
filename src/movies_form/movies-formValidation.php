@@ -34,8 +34,10 @@ function validateTitle($title) {
         . . . . . .l. . . . . ;. . . /__
         . . . . . /. . . . . /__. . . . .)
         . . . . . '-.. . . . . . .)
-        . . . . . . .' - .......-`  
+        . . . . . . .' - .......-`
+        nazvanie normal'noe vvedi...
         EOD;
+        
     }
     if (strlen($title) > MAX_TITLE_LENGTH) {
         return "Название должно быть меньше ".MAX_TITLE_LENGTH." символов.";
@@ -45,19 +47,19 @@ function validateTitle($title) {
 
 function validateDescription($description) {
     if (empty($description)) {
-        return "Описание не должно быть пустым.";
+        return "Описание не должно быть пустым.(aaa negri)";
     }
     return false;
 }
 
 function validateReleaseDate($release_date) {
     if (empty($release_date)) {
-        return "Дата не должна быть пустой.";
+        return "Дата не должна быть пустой.(goida)";
     }
 
     $date = DateTime::createFromFormat('Y-m-d', $release_date);
     if (!$date || $date->format('Y-m-d') !== $release_date) {
-        return "Неправильный формат данных. Используйте YYYY-MM-DD.";
+        return "Неправильный формат данных. Используйте YYYY-MM-DD.(dr gitlera)";
     }
     return false;
 }

@@ -1,7 +1,6 @@
 <?php
 
-require "session-formQueries.php";
-require "session-formValidation.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formQueries.php";
 
 $movie_id = $_POST['movie_id'];
 $hall_number = $_POST['hall_number'];
@@ -11,7 +10,7 @@ $price = $_POST['price'];
 if(($result = validateSession($movie_id, $hall_number, $start_time, $price)) != false) {
     echo "<p style='color: red;'>".nl2br($result)."</p>";
 } else {
-    setMovie($movie_id, $hall_number, $start_time, $price);
+    setSession($movie_id, $hall_number, $start_time, $price);
     header("Location: \\cinema/index.php");
     exit();
 }
