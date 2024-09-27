@@ -1,3 +1,9 @@
+<?php
+  session_start();
+  require_once $_SERVER["DOCUMENT_ROOT"]."/cinema/src/authorization/checkAuthorization.php";
+
+  if(checkAuthorization() != false) header("Location: /cinema/src/authorization/authorization-page.html");
+?>
 <!DOCTYPE html>
 <html>
   <head>

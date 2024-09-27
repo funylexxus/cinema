@@ -1,8 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 
 require "authorizationQueries.php";
 require "authorizationValidation.php";
@@ -19,6 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         echo "<p style='color: red;'>Ошибка: $result</p>";
     } else {
         setUser($login, password_hash($password, PASSWORD_BCRYPT), $email);
+        session_start();
+        $_SESSION['loggedin'] = true;
         header("Location: \\cinema/index.php");
         exit();
     }
@@ -39,6 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         echo "<p style='color: red;'>Ошибка: $result</p>";
     } else {
         if (password_verify($password, $hashedPassword)) {
+            session_start();
+            $_SESSION['loggedin'] = true;
             header("Location: \\cinema/index.php");
             exit();
         } else {

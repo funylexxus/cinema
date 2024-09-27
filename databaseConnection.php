@@ -1,4 +1,6 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
+
 function connectToDatabase(){
     try{
         $conn = new mysqli(SERVERNAME, USERNAME, PASSWORD, DBNAME);

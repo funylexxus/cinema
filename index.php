@@ -1,3 +1,10 @@
+<?php
+  session_start();
+
+  require_once $_SERVER["DOCUMENT_ROOT"]."/cinema/src/authorization/checkAuthorization.php";
+
+  if(checkAuthorization() != false) header("Location: /cinema/src/authorization/authorization-page.html");
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -55,10 +62,10 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a
                 class="dropdown-item"
-                href="/cinema/src/movies_form/movies_form.html"
+                href="/cinema/src/movies_form/movies_form.php"
                 >Movies form</a
               >
-              <a class="dropdown-item" href="/cinema/src/sessions_form/sessions_form.html">Sessions form</a>
+              <a class="dropdown-item" href="/cinema/src/sessions_form/sessions_form.php">Sessions form</a>
             </div>
           </li>
         </ul>
