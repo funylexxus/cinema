@@ -1,6 +1,7 @@
 <?php
 
-require $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formQueries.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formQueries.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formValidation.php";
 
 $movie_id = $_POST['movie_id'];
 $hall_number = $_POST['hall_number'];
