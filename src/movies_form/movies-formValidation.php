@@ -1,5 +1,4 @@
 <?php
-
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
 
 function validateMovie($title, $description, $release_date, $duration, $rating){
@@ -72,7 +71,8 @@ function validateDuration($duration) {
 }
 
 function validateRating($rating) {
-    if (!is_numeric($rating) || $rating < MIN_RATING || $rating > MAX_RATING) {
+    if(!is_numeric($rating)) return "Рейтинг должен быть числом";
+    if ($rating < MIN_RATING || $rating > MAX_RATING) {
         return "Рейтинг должен быть от ".MIN_RATING." до ".MAX_RATING.".";
     }
     return false;

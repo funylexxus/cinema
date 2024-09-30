@@ -2,7 +2,32 @@
   session_start();
   require_once $_SERVER["DOCUMENT_ROOT"]."/cinema/src/authorization/checkAuthorization.php";
 
-  if(checkAuthorization() != false) header("Location: /cinema/src/authorization/authorization-page.html");
+  if(checkAuthorization() != false) {
+    header("Location: /cinema/src/authorization/authorization-page.php");
+    exit();
+  }
+
+  require "movies-formQueries.php";
+  require "movies-formValidation.php";
+
+  if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'movie') {
+    $title = $_POST["title"];
+    $description = $_POST["description"];
+    $release_date = $_POST["release_date"];
+    $duration = filter_input(INPUT_POST, "duration", FILTER_SANITIZE_NUMBER_INT);
+    $rating = $_POST["rating"];
+    
+    if (isset($_POST['title'])) {
+      if (($result = validateMovie($title, $description, $release_date, $duration, $rating)) != false) {
+        // Сохраняем ошибку в переменную
+        $error_message = "<p style='color: red;'>".nl2br($result)."</p>";
+      } else {
+        setMovie($title, $description, $release_date, $duration, $rating);
+        header("Location: /cinema/index.php");
+        exit();
+      }
+    }
+  }
 ?>
 <!DOCTYPE html>
 <html>
@@ -97,11 +122,6 @@
 
         <label for="release_date">Release date</label>
         <input type="date" id="release-date" name="release_date" class="calendar-input" placeholder="Release date..." max="2026-12-31"/>
-        <!-- <input
-          id="release_date"
-          type="text"
-          name="release_date"
-          placeholder="Release date..." /> -->
 
         <label for="duration">Duration</label>
         <input
@@ -111,10 +131,15 @@
           placeholder="Duration..." />
 
         <label for="rating">Rating</label>
-        <input id="rating" type="text" name="rating" placeholder="Rating..." />
-
+        <input id="rating" type="number" step="0.1" name="rating" placeholder="Rating..." />
+        <input type="hidden" name="action" value="movie" />
         <button type="submit">Submit</button>
       </form>
+      <?php
+        if (isset($error_message)) {
+          echo $error_message;
+        }
+      ?>
     </main>
 
     <script
@@ -133,26 +158,3 @@
       <script src="/src/js/scripts.js"></script>
   </body>
 </html>
-
-<?php
-
-require "movies-formQueries.php";
-require "movies-formValidation.php";
-
-$title = $_POST["title"];
-$description = $_POST["description"];
-$release_date = $_POST["release_date"];
-$duration = filter_input(INPUT_POST, "duration", FILTER_SANITIZE_NUMBER_INT);
-$rating = filter_input(INPUT_POST, "rating", FILTER_SANITIZE_NUMBER_INT);
-
-if(isset($_POST['title'])) {
-  if(($result = validateMovie($title, $description, $release_date, $duration, $rating)) != false) {
-    echo "<p style='color: red;'>".nl2br($result)."</p>";
-  } else {
-    setMovie($title, $description, $release_date, $duration, $rating);
-    header("Location: ../../index.php"); 
-    exit();
-  }
-}
-
-?>
