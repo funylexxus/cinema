@@ -1,10 +1,10 @@
 <?php
-session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/cinema/config_session.php';
 require_once $_SERVER["DOCUMENT_ROOT"] . "/cinema/src/authorization/checkAuthorization.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formQueries.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formValidation.php" ;
 
-if (checkAuthorization() != false) header("Location: /cinema/src/authorization/authorization-page.html");
+//if (checkAuthorization() != false) header("Location: /cinema/src/authorization/authorization-page.php");
 
 
 

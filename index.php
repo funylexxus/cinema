@@ -1,6 +1,7 @@
 <?php
-require_once $_SERVER["DOCUMENT_ROOT"] . "/cinema/src/authorization/checkAuthorization.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . '/cinema/config_session.php';
+require_once $_SERVER["DOCUMENT_ROOT"] . "/cinema/src/authorization/checkAuthorization.php";
+
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formQueries.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/movies_form/movies-formQueries.php";
