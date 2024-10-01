@@ -105,3 +105,16 @@ function getMoviesIdByTitle(String $title){
 
     return $id;
 }
+
+function deleteMovie($id) {
+    $connection = connectToDatabase();
+
+    $sql = "DELETE FROM movies WHERE id = ?";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("i", $id);
+
+    $stmt->execute();
+    $stmt->close();
+
+    disconnectFromDatabase($connection);
+}

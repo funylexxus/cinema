@@ -40,3 +40,15 @@ function getSessions(){
     return $sessionsArray;
 }
 
+function deleteSession($id) {
+    $connection = connectToDatabase();
+
+    $sql = "DELETE FROM sessions WHERE id = ?";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("i", $id);
+
+    $stmt->execute();
+    $stmt->close();
+
+    disconnectFromDatabase($connection);
+}
