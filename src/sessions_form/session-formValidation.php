@@ -10,16 +10,14 @@ function validateSession($movie_id, $hall_number, $start_time, $price){
     return false;
 }
 
-function validateMovieId(int $movie_id) {
+function validateMovieId($movie_id) {
     if($movie_id < 0) return "Id должен быть больше нуля"; 
-    if(!is_int($movie_id)) return "Id фильма должен быть целым числом";
 
     return  false;
 }
 
-function validateHallNumber(int $hall_number) {
+function validateHallNumber($hall_number) {
     if($hall_number < MIN_HALL_NUMBER) return "Номер зала должен быть больше ".(MIN_HALL_NUMBER-1); 
-    if(!is_int($hall_number)) return "Номер зала должен быть целым числом";
 
     return false;
 }
@@ -29,9 +27,11 @@ function validateStartTime($start_time) {
         return "Дата не должна быть пустой.";
     }
 
-    $date = DateTime::createFromFormat('Y-m-d h:m:s', $start_time);
-    if (!$date || $date->format('Y-m-d h:m:s') !== $start_time) {
-        return "Неправильный формат данных. Используйте YYYY-MM-DD HH:MM:SS.";
+    $format = 'Y-m-d H:i:s';
+    $dateTime = DateTime::createFromFormat($format, $start_time);
+
+    if (!$dateTime || $dateTime->format($format) !== $start_time) {
+        return "Дата должна быть в формате YYYY-MM-DD HH:MM:SS.";
     }
 
     return false;
