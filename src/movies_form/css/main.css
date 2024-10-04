@@ -1,0 +1,39 @@
+* {
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  padding-top: 20px;
+  margin: 0px auto;
+  text-align: center;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 70px;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+
+#movies_form {
+  /* background-image: url(https://m.media-amazon.com/images/M/MV5BOWMxNjdmYjAtZjc4MS00MWQ4LTg1MTctMzE4ZjhkNWUyMzQ5XkEyXkFqcGc@._V1_.jpg); */
+}
+
+input {
+  margin-bottom: 10px;
+  /* background-color: transparent; */
+}
+
+button {
+  margin-top: 10px;
+}
