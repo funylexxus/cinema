@@ -92,6 +92,30 @@ function getUsername(int $id){
     return $username;
 }
 
+function getUsers(){
+    $connection = connectToDatabase();
+
+    $usersArray = [];
+
+    $sql = "SELECT * FROM users";
+    $stmt = $connection->prepare($sql);
+
+    $stmt->execute();
+    $result= $stmt->get_result();
+
+    if($result->num_rows > 0){
+        while($row = $result->fetch_assoc()){
+            $usersArray[] = $row;
+        }
+    }
+
+    $stmt->close();
+
+    disconnectFromDatabase($connection);
+
+    return $usersArray;
+}
+
 function setUsername(int $id, string $newUsername) {
     $connection = connectToDatabase();
 

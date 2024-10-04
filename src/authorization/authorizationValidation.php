@@ -10,8 +10,8 @@ function validateRegistration($username, $email, $password){
     return false;
 }
 
-function validateAuthorization($email, $password){
-    if(($result = validateEmail($email)) != false) return $result;
+function validateAuthorization($username, $password){
+    if(($result = validateUsername($username)) != false) return $result;
     if(($result = validatePassword($password)) != false) return $result;
     
     return false;
@@ -69,4 +69,12 @@ function checkMinLength($str, int $minLength){
         return "должен быть не менее $minLength символов.";
     }
     return false;
+}
+
+function login_verify($login){
+    $usernames = array_column(getUsers(), "login");
+
+    if(in_array($login, $usernames)) return false;
+
+    return true;
 }
