@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
       </form>
 
       <div class="table-responsive">
-        <form method="POST" id="deleteForm">
+        <form method="POST" id="deleteMoviesForm">
           <table class="table custom-table">
             <thead>
               <tr>
@@ -179,11 +179,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
               <?php endforeach; ?>
             </tbody>
           </table>
-          <button type="button" onclick="confirmDeletion()" class="btn btn-danger">Delete Selected</button>
+          <button type="button" onclick="confirmMoviesDeletion()" class="btn btn-danger">Delete Selected</button>
         </form>
 
         <script>
-          function confirmDeletion() {
+          function confirmMoviesDeletion() {
             const selectedIds = document.querySelectorAll('input[name="delete_ids[]"]:checked');
             if (selectedIds.length === 0) {
               alert("Please select at least one movie to delete.");
@@ -192,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
 
             const confirmation = confirm("Do you want to delete the selected movies and their related sessions?");
             if (confirmation) {
-              document.getElementById('deleteForm').submit();
+              document.getElementById('deleteMoviesForm').submit();
             }
           }
         </script>
@@ -210,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
       </form>
 
       <div class="table-responsive">
-        <form method="POST">
+        <form method="POST" id="deleteSessionsForm">
           <table class="table custom-table">
             <thead>
               <tr>
@@ -240,8 +240,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
               <?php endforeach; ?>
             </tbody>
           </table>
-          <button type="submit" name="deleteSession" class="btn btn-danger">Delete Selected</button>
+          <button type="submit" onclick="confirmSessionDeletion()" name="deleteSession" class="btn btn-danger">Delete Selected</button>
         </form>
+        <script>
+          function confirmSessionDeletion() {
+            const selectedIds = document.querySelectorAll('input[name="delete_ids[]"]:checked');
+            if (selectedIds.length === 0) {
+              alert("Please select at least one session to delete.");
+              return;
+            } else document.getElementById('deleteSessionsForm').submit();
+          }
+        </script>
       </div>
     </div>
   </div>
