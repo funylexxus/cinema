@@ -26,7 +26,7 @@
       <div class="login">
         <form action="authorization-page.php" method="post">
           <label for="chk" aria-hidden="true">Login</label>
-          <input type="email" name="email" placeholder="Email" />
+          <input type="text" name="login" placeholder="Username" />
           <input type="password" name="pswd" placeholder="Password" />
           <input type="hidden" name="action" value="login" />
           <button>Login</button>
@@ -66,15 +66,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 //sign in
 //
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'login') {
-    $email = $_POST['email'];
+    $login = $_POST['login'];
     $password = $_POST['pswd'];
+    $email = $_POST['email'];
 
-    $id = getIdByEmail($email);
+    $id = getIdByUsername($login);
 
     if($id != null) $hashedPassword = getPassword($id);
         else $hashedPassword = "";
 
-    if(($result = validateAuthorization($email, $password)) != false) {
+    if(($result = validateAuthorization($username, $email, $password)) != false) {
         echo "<p style='color: red;'>Ошибка: $result</p>";
     } else {
         if (password_verify($password, $hashedPassword)) {
