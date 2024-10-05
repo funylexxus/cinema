@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
   else $hashedPassword = "";
 
   //Мб убрать валидацию при входе? 
-  if (($result = validateAuthorization($username, $password)) != false) {
+  if (($result = validateAuthorization($login, $password)) != false) {
     echo "<p style='color: red;'>Ошибка: $result</p>";
   } else {
     if (password_verify($password, $hashedPassword)) {
