@@ -8,7 +8,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/authorization/roleQueries.
 
 if (checkAuthorization() != false) header("Location: /cinema/src/authorization/authorization-page.php");
 $roleName = getRoleName($_SESSION["role_id"]);
-if (!isAdmin($roleName) || !isEmployee($roleName)) exit();
+if (!isAdmin($roleName) && !isEmployee($roleName)) exit();
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'movie') {
