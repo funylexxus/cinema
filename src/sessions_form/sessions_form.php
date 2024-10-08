@@ -3,9 +3,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/cinema/config_session.php';
 require_once $_SERVER["DOCUMENT_ROOT"] . "/cinema/src/authorization/checkAuthorization.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formQueries.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formValidation.php" ;
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/authorization/rolesValidation.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/authorization/roleQueries.php";
 
-//if (checkAuthorization() != false) header("Location: /cinema/src/authorization/authorization-page.php");
-
+if (checkAuthorization() != false) header("Location: /cinema/src/authorization/authorization-page.php");
+$roleName = getRoleName($_SESSION["role_id"]);
+if (!isAdmin($roleName) || !isEmployee($roleName)) exit();
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'session') {

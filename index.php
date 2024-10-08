@@ -5,8 +5,11 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/cinema/src/authorization/checkAuthori
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formQueries.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/movies_form/movies-formQueries.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/authorization/rolesValidation.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/authorization/roleQueries.php";
 if (checkAuthorization() != false) header("Location: /cinema/src/authorization/authorization-page.php");
 
+$roleName = getRoleName($_SESSION["role_id"]);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteSession'])) {
   $delete_ids = $_POST['delete_ids'] ?? [];
@@ -24,8 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
   $delete_ids = $_POST['delete_ids'];
 
   foreach ($delete_ids as $id) {
-      // Confirm related session deletion here if necessary
-      deleteMovie($id);
+    // Confirm related session deletion here if necessary
+    deleteMovie($id);
   }
 
   // Optionally, redirect to refresh the page after deletion
@@ -75,24 +78,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
             class="nav-link"
             href="/cinema/src/authorization/authorization-page.php">Authorization</a>
         </li>
-
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="navbarDropdownMenuLink"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false">
-            Tables Forms
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <?php if (isAdmin($roleName) || isEmployee($roleName)): ?>
+          <li class="nav-item dropdown">
             <a
-              class="dropdown-item"
-              href="/cinema/src/movies_form/movies_form.php">Movies form</a>
-            <a class="dropdown-item" href="/cinema/src/sessions_form/sessions_form.php">Sessions form</a>
-          </div>
-        </li>
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="navbarDropdownMenuLink"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false">
+              Tables Forms
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a
+                class="dropdown-item"
+                href="/cinema/src/movies_form/movies_form.php">Movies form</a>
+              <a class="dropdown-item" href="/cinema/src/sessions_form/sessions_form.php">Sessions form</a>
+            </div>
+          </li>
+        <?php endif; ?>
       </ul>
     </div>
   </nav>
@@ -153,7 +157,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
           <table class="table custom-table">
             <thead>
               <tr>
-                <th scope="col"></th>
+                <?php if (isAdmin($roleName) || isEmployee($roleName)): ?>
+                  <th scope="col"></th>
+                <?php endif; ?>
                 <th scope="col">Id</th>
                 <th scope="col">Title</th>
                 <th scope="col">Release date</th>
@@ -164,12 +170,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
             <tbody>
               <?php foreach ($moviesArray as $row): ?>
                 <tr>
-                  <th scope="row">
-                    <label class="control control--checkbox">
-                      <input type="checkbox" name="delete_ids[]" value="<?php echo $row['id']; ?>" />
-                      <div class="control__indicator"></div>
-                    </label>
-                  </th>
+                  <?php if (isAdmin($roleName) || isEmployee($roleName)): ?>
+                    <th scope="row">
+                      <label class="control control--checkbox">
+                        <input type="checkbox" name="delete_ids[]" value="<?php echo $row['id']; ?>" />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </th>
+                  <?php endif; ?>
                   <td><?php echo $row['id']; ?></td>
                   <td><?php echo htmlspecialchars($row['title']); ?></td>
                   <td><?php echo htmlspecialchars($row['release_date']); ?></td>
@@ -179,7 +187,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
               <?php endforeach; ?>
             </tbody>
           </table>
-          <button type="button" onclick="confirmMoviesDeletion()" class="btn btn-danger">Delete Selected</button>
+          <?php if (isAdmin($roleName) || isEmployee($roleName)): ?>
+            <button type="button" onclick="confirmMoviesDeletion()" class="btn btn-danger">Delete Selected</button>
+          <?php endif; ?>
         </form>
 
         <script>
@@ -214,7 +224,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
           <table class="table custom-table">
             <thead>
               <tr>
-                <th scope="col"></th>
+                <?php if (isAdmin($roleName) || isEmployee($roleName)): ?>
+                  <th scope="col"></th>
+                <?php endif; ?>
                 <th scope="col">Id</th>
                 <th scope="col">Movie id</th>
                 <th scope="col">Hall number</th>
@@ -225,12 +237,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
             <tbody>
               <?php foreach ($sessionsArray as $row): ?>
                 <tr>
-                  <th scope="row">
-                    <label class="control control--checkbox">
-                      <input type="checkbox" name="delete_ids[]" value="<?php echo $row['id']; ?>" />
-                      <div class="control__indicator"></div>
-                    </label>
-                  </th>
+                  <?php if (isAdmin($roleName) || isEmployee($roleName)): ?>
+                    <th scope="row">
+                      <label class="control control--checkbox">
+                        <input type="checkbox" name="delete_ids[]" value="<?php echo $row['id']; ?>" />
+                        <div class="control__indicator"></div>
+                      </label>
+                    </th>
+                  <?php endif; ?>
                   <td><?php echo $row['id']; ?></td>
                   <td><?php echo htmlspecialchars($row['movie_id']); ?></td>
                   <td><?php echo htmlspecialchars($row['hall_number']); ?></td>
@@ -240,7 +254,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
               <?php endforeach; ?>
             </tbody>
           </table>
-          <button type="submit" onclick="confirmSessionDeletion()" name="deleteSession" class="btn btn-danger">Delete Selected</button>
+          <?php if (isAdmin($roleName) || isEmployee($roleName)): ?>
+            <button type="submit" onclick="confirmSessionDeletion()" name="deleteSession" class="btn btn-danger">Delete Selected</button>
+          <?php endif; ?>
         </form>
         <script>
           function confirmSessionDeletion() {
