@@ -1,4 +1,6 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/databaseConnection.php";
+
 function getRoleName($id){
     $name = "";
 
