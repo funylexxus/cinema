@@ -76,12 +76,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
   if ($id != null) $hashedPassword = getPassword($id);
   else $hashedPassword = "";
 
+  if ($id != null) $roleId = getRoleId($id);
+  else $roleId = 0;
+
   //Мб убрать валидацию при входе? 
   if (($result = validateAuthorization($login, $password)) != false) {
     echo "<p style='color: red;'>Ошибка: $result</p>";
   } else {
     if (password_verify($password, $hashedPassword)) {
       $_SESSION['loggedin'] = true;
+      $_SESSION['role_id'] = $roleId;
       header("Location: \\cinema/index.php");
       exit();
     } else {

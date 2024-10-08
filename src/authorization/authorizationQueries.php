@@ -208,3 +208,28 @@ function setPassword(int $id, string $newPassword): bool {
 
     return $result;
 }
+
+function getRoleId($id){
+    $roleId = 0;
+
+    $connection = connectToDatabase();
+
+    $sql = "SELECT role_id FROM users WHERE id = ?";
+
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $roleId = $row["role_id"];
+    }
+
+    $stmt->close();
+
+    disconnectFromDatabase($connection);
+
+    return $roleId;
+}
