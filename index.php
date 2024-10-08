@@ -94,6 +94,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
                 class="dropdown-item"
                 href="/cinema/src/movies_form/movies_form.php">Movies form</a>
               <a class="dropdown-item" href="/cinema/src/sessions_form/sessions_form.php">Sessions form</a>
+              <?php if (isAdmin($roleName)): ?>
+                <a
+                  class="dropdown-item"
+                  href="/cinema/src/users_form/users_form.php">Users form</a>
+              <?php endif; ?>
             </div>
           </li>
         <?php endif; ?>

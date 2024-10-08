@@ -2,7 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/cinema/config_session.php';
 require_once $_SERVER["DOCUMENT_ROOT"] . "/cinema/src/authorization/checkAuthorization.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formQueries.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formValidation.php" ;
+require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/sessions_form/session-formValidation.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/authorization/rolesValidation.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/src/authorization/roleQueries.php";
 
@@ -19,8 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
   if (isset($_POST['movie_id']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     if (($result = validateSession($movie_id, $hall_number, $start_time, $price)) != false) {
-      $error_message = "<p style='color: red;'>".nl2br($result)."</p>";
-    } else{
+      $error_message = "<p style='color: red;'>" . nl2br($result) . "</p>";
+    } else {
       setSession($movie_id, $hall_number, $start_time, $price);
       header("Location: \\cinema/index.php");
       exit();
@@ -91,6 +91,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             <a
               class="dropdown-item"
               href="/cinema/src/sessions_form/sessions_form.php">Sessions form</a>
+            <?php if (isAdmin($roleName)): ?>
+              <a
+                class="dropdown-item"
+                href="/cinema/src/users_form/users_form.php">Users form</a>
+            <?php endif; ?>
           </div>
         </li>
       </ul>
@@ -167,10 +172,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
       <button type="submit">Submit</button>
     </form>
     <?php
-        if (isset($error_message)) {
-          echo $error_message;
-        }
-      ?>
+    if (isset($error_message)) {
+      echo $error_message;
+    }
+    ?>
   </main>
 
   <script

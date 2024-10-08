@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
   if (isset($_POST['title'])) {
     if (($result = validateMovie($title, $description, $release_date, $duration, $rating)) != false) {
-      $error_message = "<p style='color: red;'>".nl2br($result)."</p>";
+      $error_message = "<p style='color: red;'>" . nl2br($result) . "</p>";
     } else {
       setMovie($title, $description, $release_date, $duration, $rating);
       header("Location: ../../index.php");
@@ -94,6 +94,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             <a
               class="dropdown-item"
               href="/cinema/src/sessions_form/sessions_form.php">Sessions form</a>
+            <?php if (isAdmin($roleName)): ?>
+              <a
+                class="dropdown-item"
+                href="/cinema/src/users_form/users_form.php">Users form</a>
+            <?php endif; ?>
           </div>
         </li>
       </ul>
@@ -129,10 +134,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
       <button type="submit">Submit</button>
     </form>
     <?php
-        if (isset($error_message)) {
-          echo $error_message;
-        }
-      ?>
+    if (isset($error_message)) {
+      echo $error_message;
+    }
+    ?>
   </main>
 
   <script
