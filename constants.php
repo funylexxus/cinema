@@ -12,3 +12,6 @@ define("MAX_DURATION", 999);
 define("MIN_RATING", 0);
 define("MAX_RATING", 10);
 define("MIN_HALL_NUMBER", 1);
+define("ROLE_ADMIN", "admin");
+define("ROLE_EMPLOYEE", "employee");
+define("ROLE_USER", "user");
