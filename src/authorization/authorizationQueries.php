@@ -4,7 +4,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/databaseConnection.php";
 
 
-function setUser(String $login, String $password, String $email, int $role_id = 3){
+function setUser(String $login, String $password, String $email, int $role_id = 3)
+{
     $connection = connectToDatabase();
 
     $sql = "INSERT INTO users (login, password, email, role_id) VALUES (?, ?, ?, ?)";
@@ -17,7 +18,8 @@ function setUser(String $login, String $password, String $email, int $role_id = 
     disconnectFromDatabase($connection);
 }
 
-function getIdByEmail(String $email){
+function getIdByEmail(String $email)
+{
     $id = null;
 
     $connection = connectToDatabase();
@@ -42,7 +44,8 @@ function getIdByEmail(String $email){
     return $id;
 }
 
-function getIdByUsername(String $username){
+function getIdByUsername(String $username)
+{
     $id = null;
 
     $connection = connectToDatabase();
@@ -67,7 +70,8 @@ function getIdByUsername(String $username){
     return $id;
 }
 
-function getUsername(int $id){
+function getUsername(int $id)
+{
     $username = "";
 
     $connection = connectToDatabase();
@@ -92,7 +96,8 @@ function getUsername(int $id){
     return $username;
 }
 
-function getUsers(){
+function getUsers()
+{
     $connection = connectToDatabase();
 
     $usersArray = [];
@@ -101,10 +106,10 @@ function getUsers(){
     $stmt = $connection->prepare($sql);
 
     $stmt->execute();
-    $result= $stmt->get_result();
+    $result = $stmt->get_result();
 
-    if($result->num_rows > 0){
-        while($row = $result->fetch_assoc()){
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
             $usersArray[] = $row;
         }
     }
@@ -116,7 +121,8 @@ function getUsers(){
     return $usersArray;
 }
 
-function setUsername(int $id, string $newUsername) {
+function setUsername(int $id, string $newUsername)
+{
     $connection = connectToDatabase();
 
     $sql = "UPDATE users SET login = ? WHERE id = ?";
@@ -129,7 +135,8 @@ function setUsername(int $id, string $newUsername) {
     disconnectFromDatabase($connection);
 }
 
-function getEmail(int $id){
+function getEmail(int $id)
+{
     $email = "";
 
     $connection = connectToDatabase();
@@ -154,7 +161,8 @@ function getEmail(int $id){
     return $email;
 }
 
-function setEmail(int $id, string $newEmail): bool {
+function setEmail(int $id, string $newEmail): bool
+{
     $connection = connectToDatabase();
 
     $sql = "UPDATE users SET email = ? WHERE id = ?";
@@ -169,7 +177,8 @@ function setEmail(int $id, string $newEmail): bool {
     return $result;
 }
 
-function getPassword(int $id){
+function getPassword(int $id)
+{
     $password = "";
 
     $connection = connectToDatabase();
@@ -194,7 +203,8 @@ function getPassword(int $id){
     return $password;
 }
 
-function setPassword(int $id, string $newPassword): bool {
+function setPassword(int $id, string $newPassword): bool
+{
     $connection = connectToDatabase();
 
     $sql = "UPDATE users SET password = ? WHERE id = ?";
@@ -209,7 +219,8 @@ function setPassword(int $id, string $newPassword): bool {
     return $result;
 }
 
-function getRoleId($id){
+function getRoleId($id)
+{
     $roleId = 0;
 
     $connection = connectToDatabase();
@@ -232,4 +243,18 @@ function getRoleId($id){
     disconnectFromDatabase($connection);
 
     return $roleId;
+}
+
+function deleteUser($id)
+{
+    $connection = connectToDatabase();
+
+    $sql = "DELETE FROM users WHERE id = ?";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("i", $id);
+
+    $stmt->execute();
+    $stmt->close();
+
+    disconnectFromDatabase($connection);
 }

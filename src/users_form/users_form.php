@@ -22,6 +22,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         setUser($login, password_hash($password, PASSWORD_BCRYPT), $email, $role_id);
     } else $error_message = "<p style='color: red;'>" . "Указанный логин уже занят" . "</p>";
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteUser'])) {
+    $delete_ids = $_POST['delete_ids'] ?? [];
+
+    foreach ($delete_ids as $id) {
+        deleteUser($id);
+    }
+
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -185,7 +196,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             </form>
 
             <div class="table-responsive">
-                <form method="POST" id="deleteMoviesForm">
+                <form method="POST" id="deleteUsersForm">
                     <table class="table custom-table">
                         <thead>
                             <tr>
@@ -215,7 +226,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-                    <button type="button" onclick="confirmUsersDeletion()" class="btn btn-danger">Delete Selected</button>
+                    <button type="submit" onclick="confirmUsersDeletion()" name="deleteUser" class="btn btn-danger">Delete Selected</button>
                 </form>
 
                 <script>
@@ -224,7 +235,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                         if (selectedIds.length === 0) {
                             alert("Please select at least one user to delete.");
                             return;
-                        }
+                        } else document.getElementById('deleteUsersForm').submit();
                     }
                 </script>
             </div>
