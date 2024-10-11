@@ -25,3 +25,27 @@ function getRoleName($id){
 
     return $name;
 }
+
+function getRoles(){
+    $connection = connectToDatabase();
+
+    $rolesArray = [];
+
+    $sql = "SELECT * FROM roles";
+    $stmt = $connection->prepare($sql);
+
+    $stmt->execute();
+    $result= $stmt->get_result();
+
+    if($result->num_rows > 0){
+        while($row = $result->fetch_assoc()){
+            $rolesArray[] = $row;
+        }
+    }
+
+    $stmt->close();
+
+    disconnectFromDatabase($connection);
+
+    return $rolesArray;
+}

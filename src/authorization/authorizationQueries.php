@@ -4,12 +4,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/constants.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/cinema/databaseConnection.php";
 
 
-function setUser(String $login, String $password, String $email){
+function setUser(String $login, String $password, String $email, int $role_id = 3){
     $connection = connectToDatabase();
 
-    $sql = "INSERT INTO users (login, password, email) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO users (login, password, email, role_id) VALUES (?, ?, ?, ?)";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param("sss", $login, $password, $email);
+    $stmt->bind_param("sssi", $login, $password, $email, $role_id);
 
     $stmt->execute();
     $stmt->close();
