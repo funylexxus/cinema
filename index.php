@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteSession'])) {
     deleteSession($id);
   }
 
-  // Optionally, redirect to refresh the page after deletion
   header("Location: " . $_SERVER['PHP_SELF']);
   exit();
 }
@@ -24,14 +23,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
   $delete_ids = $_POST['delete_ids'];
 
   foreach ($delete_ids as $id) {
-    // Confirm related session deletion here if necessary
     deleteMovie($id);
   }
 
-  // Optionally, redirect to refresh the page after deletion
   header("Location: " . $_SERVER['PHP_SELF']);
   exit();
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+  if (isset($_POST['update_id'])) {
+    $update_id = $_POST['update_id'];
+    $movie_id = $_POST['movie_id'];
+    $hall_number = $_POST['hall_number'];
+    $start_time = $_POST['start_time'];
+    $price = $_POST['price'];
+
+    updateSessions($update_id, $movie_id, $hall_number, $start_time, $price);
+
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+  }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -213,37 +227,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
       </form>
 
       <div class="table-responsive">
-        <form method="POST" id="deleteSessionsForm">
+        <form method="POST" id="sessionsForm">
           <table class="table custom-table">
             <thead>
               <tr>
-                <th scope="col"></th>
+                <th scope="col">Удалить</th>
                 <th scope="col">Id</th>
                 <th scope="col">Movie id</th>
                 <th scope="col">Hall number</th>
                 <th scope="col">Start time</th>
                 <th scope="col">Price</th>
+                <th scope="col">Действия</th>
               </tr>
             </thead>
             <tbody>
               <?php foreach ($sessionsArray as $row): ?>
                 <tr>
-                  <th scope="row">
+                  <td>
                     <label class="control control--checkbox">
                       <input type="checkbox" name="delete_ids[]" value="<?php echo $row['id']; ?>" />
                       <div class="control__indicator"></div>
                     </label>
-                  </th>
+                  </td>
                   <td><?php echo $row['id']; ?></td>
-                  <td><?php echo htmlspecialchars($row['movie_id']); ?></td>
-                  <td><?php echo htmlspecialchars($row['hall_number']); ?></td>
-                  <td><?php echo htmlspecialchars($row['start_time']); ?></td>
-                  <td><?php echo htmlspecialchars($row['price']); ?></td>
+                  <td>
+                    <?php if (isset($_GET['edit']) && $_GET['edit'] == $row['id']): ?>
+                      <input type="text" name="movie_id" value="<?php echo htmlspecialchars($row['movie_id']); ?>" required />
+                    <?php else: ?>
+                      <?php echo htmlspecialchars($row['movie_id']); ?>
+                    <?php endif; ?>
+                  </td>
+                  <td>
+                    <?php if (isset($_GET['edit']) && $_GET['edit'] == $row['id']): ?>
+                      <input type="text" name="hall_number" value="<?php echo htmlspecialchars($row['hall_number']); ?>" required />
+                    <?php else: ?>
+                      <?php echo htmlspecialchars($row['hall_number']); ?>
+                    <?php endif; ?>
+                  </td>
+                  <td>
+                    <?php if (isset($_GET['edit']) && $_GET['edit'] == $row['id']): ?>
+                      <input type="datetime-local" name="start_time" value="<?php echo date('Y-m-d\TH:i', strtotime($row['start_time'])); ?>" required />
+                    <?php else: ?>
+                      <?php echo htmlspecialchars($row['start_time']); ?>
+                    <?php endif; ?>
+                  </td>
+                  <td>
+                    <?php if (isset($_GET['edit']) && $_GET['edit'] == $row['id']): ?>
+                      <input type="number" step="0.01" name="price" value="<?php echo htmlspecialchars($row['price']); ?>" required />
+                    <?php else: ?>
+                      <?php echo htmlspecialchars($row['price']); ?>
+                    <?php endif; ?>
+                  </td>
+                  <td>
+                    <?php if (isset($_GET['edit']) && $_GET['edit'] == $row['id']): ?>
+                      <input type="hidden" name="update_id" value="<?php echo $row['id']; ?>" />
+                      <button type="submit" class="btn btn-primary">Update</button>
+                      <a href="<?php echo $_SERVER['PHP_SELF']; ?>" class="btn btn-secondary">Cancel</a>
+                    <?php else: ?>
+                      <a href="<?php echo $_SERVER['PHP_SELF']; ?>?edit=<?php echo $row['id']; ?>" class="btn btn-warning">Edit</a>
+                    <?php endif; ?>
+                  </td>
                 </tr>
               <?php endforeach; ?>
             </tbody>
           </table>
-          <button type="submit" onclick="confirmSessionDeletion()" name="deleteSession" class="btn btn-danger">Delete Selected</button>
+          <?php if (!isset($_GET['edit'])): // Показываем кнопку удаления только если не в режиме редактирования 
+          ?>
+            <button type="submit" class="btn btn-danger">Delete Selected</button>
+          <?php endif; ?>
         </form>
         <script>
           function confirmSessionDeletion() {
@@ -251,7 +302,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
             if (selectedIds.length === 0) {
               alert("Please select at least one session to delete.");
               return;
-            } else document.getElementById('deleteSessionsForm').submit();
+            } else document.getElementById('sessionsForm').submit();
           }
         </script>
       </div>

@@ -52,3 +52,16 @@ function deleteSession($id) {
 
     disconnectFromDatabase($connection);
 }
+
+function updateSessions($update_id, $movie_id, $hall_number, $start_time, $price){
+    $connection = connectToDatabase();
+
+    $sql = "UPDATE sessions SET movie_id = ?, hall_number = ?, start_time = ?, price = ? WHERE id = ?";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param("iisdi", $movie_id, $hall_number, $start_time, $price, $update_id);
+
+    $stmt->execute();
+    $stmt->close();
+
+    disconnectFromDatabase($connection);
+}
