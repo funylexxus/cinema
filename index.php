@@ -120,8 +120,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
 
       // Фильтрация массива
       $sessionsArray = array_filter($sessionsArray, function ($session) use ($hall_number, $price) {
-        $matchHall = empty($hall_number) || $session['hall_number'] == $hall_number;
-        $matchPrice = empty($price) || $session['price'] == $price;
+        // Проверяем частичное совпадение по hall_number и price
+        $matchHall = strpos((string)$session['hall_number'], (string)$hall_number) !== false;
+        $matchPrice = strpos((string)$session['price'], (string)$price) !== false;
+
         return $matchHall && $matchPrice;
       });
     } elseif (isset($_POST['resetSessions'])) {
@@ -134,8 +136,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_ids'])) {
       $rating = $_POST['Rating'] ?? '';
 
       $moviesArray = array_filter($moviesArray, function ($movie) use ($title, $rating) {
-        $matchTitle = empty($title) || stripos($movie['title'], $title) !== false;
-        $matchRating = empty($rating) || $movie['rating'] === $rating;
+        $matchTitle = strpos((string)$movie['title'], (string)$title) !== false;
+        $matchRating = strpos((string)$movie['rating'], (string)$rating) !== false;
+
         return $matchTitle && $matchRating;
       });
     } elseif (isset($_POST['resetMovies'])) {
