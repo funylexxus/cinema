@@ -204,7 +204,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteUser'])) {
                                 <th scope="col">Id</th>
                                 <th scope="col">Login</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Password</th>
                                 <th scope="col">Role Id</th>
                             </tr>
                         </thead>
@@ -220,7 +219,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteUser'])) {
                                     <td><?php echo $row['id']; ?></td>
                                     <td><?php echo htmlspecialchars($row['login']); ?></td>
                                     <td><?php echo htmlspecialchars($row['email']); ?></td>
-                                    <td><?php echo htmlspecialchars($row['password']); ?></td>
                                     <td><?php echo htmlspecialchars($row['role_id']); ?></td>
                                 </tr>
                             <?php endforeach; ?>
