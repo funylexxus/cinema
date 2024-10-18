@@ -57,9 +57,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
   if (($result = validateRegistration($login, $email, $password)) != false) {
     echo "<p style='color: red;'>Ошибка: $result</p>";
-  } else if(login_verify($login)){
+  } else if (login_verify($login)) {
     setUser($login, password_hash($password, PASSWORD_BCRYPT), $email);
     $_SESSION['loggedin'] = true;
+    $_SESSION['role_id'] = 3;
     header("Location: \\cinema/index.php");
     exit();
   } else echo "<p style='color: red;'>Указанный логин уже занят</p>";
